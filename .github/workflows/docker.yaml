@@ -85,7 +85,7 @@ jobs:
           df -hT
           ./m3u8-downloader -u=$line -o=linux
           pwd
-          tar -xzf linux.tar.gz linux.mp4
+          tar -czf linux.tar.gz linux.mp4
           df -hT
           rm -rf linux.mp4
           df -hT
