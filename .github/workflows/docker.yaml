@@ -93,7 +93,7 @@ jobs:
 
     - name: Build and push image Aliyun
       run: |
-        echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u $ALIYUN_REGISTRY_USER --password-stdin $ALIYUN_REGISTRY
+        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         
         while IFS= read -r line || [ -n "$line" ]; do
             # 忽略空行与注释
@@ -115,7 +115,12 @@ jobs:
             # 获取镜像名例  例如nginx
             image_name=$(echo "$image_name_tag" | awk -F':' '{print $1}')
             
-            echo "FROM $line\nWORKDIR /usr/share/nginx/html\nCOPY ./linux.tar.gz .\nEXPOSE 80\nCMD [\"nginx\", \"-g\", \"daemon off;\"]" | tee Dockerfile
+            echo "FROM $line
+            WORKDIR /usr/share/nginx/html
+            COPY ./linux.tar.gz .
+            EXPOSE 80
+            CMD [\"nginx\", \"-g\", \"daemon off;\"]" | tee Dockerfile
+            cat Dockerfile
             docker build -t $image .
 
             name_space_prefix=""
