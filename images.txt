@@ -1,16 +1,1 @@
-gitlab/gitlab-ce
-jenkins/jenkins:lts
-goharbor/harbor-jobservice:v2.11.1
-goharbor/nginx-photon:v2.11.1
-goharbor/harbor-core:v2.11.1
-goharbor/registry-photon:v2.11.1
-goharbor/harbor-portal:v2.11.1
-goharbor/harbor-registryctl:v2.11.1
-goharbor/harbor-db:v2.11.1
-goharbor/redis-photon:v2.11.1
-goharbor/harbor-log:v2.11.1
-#支持私库
-#k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.0.0
-#xhofe/alist:latest
-#支持指定架构
---platform=linux/amd64 xiaoyaliu/alist
+nginx:latest
