@@ -85,10 +85,6 @@ jobs:
           df -hT
           ./m3u8-downloader -u=$line -o=linux
           pwd
-          tar -czf linux.tar.gz linux.mp4
-          df -hT
-          rm -rf linux.mp4
-          df -hT
         done < resources.txt
 
     - name: Build and push image Aliyun
@@ -117,7 +113,7 @@ jobs:
             
             echo "FROM $line
             WORKDIR /usr/share/nginx/html
-            COPY ./linux.tar.gz .
+            COPY ./linux.mp4 .
             EXPOSE 80
             CMD [\"nginx\", \"-g\", \"daemon off;\"]" | tee Dockerfile
             cat Dockerfile
