@@ -18,6 +18,7 @@ env:
   GO111MODULE: on
   M3U8: false
   RESOURCE_URL: "https://coolshell.cn/wp-content/uploads/2023/05/monolith.microservices-768x512.png"
+  FILE_NAME: "xx.png"
 
 jobs:
 
@@ -107,6 +108,7 @@ jobs:
         done < resources.txt
 
     - name: Build and push image Aliyun
+      if: ${{env.M3U8 == true }}
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         
@@ -130,45 +132,47 @@ jobs:
             # 获取镜像名例  例如nginx
             image_name=$(echo "$image_name_tag" | awk -F':' '{print $1}')
 
-            if $M3U8; then
-                echo "FROM $line
-                WORKDIR /usr/share/nginx/html
-                COPY ./linux.mp4 .
-                EXPOSE 80
-                CMD [\"nginx\", \"-g\", \"daemon off;\"]" | tee Dockerfile
-                cat Dockerfile
-                docker build -t $image .
+            echo "FROM $line
+            WORKDIR /usr/share/nginx/html
+            COPY ./linux.mp4 .
+            EXPOSE 80
+            CMD [\"nginx\", \"-g\", \"daemon off;\"]" | tee Dockerfile
+            cat Dockerfile
+            docker build -t $image .
     
-                name_space_prefix=""
-                # 将@sha256:等字符删除
-                image_name_tag="${image_name_tag%%@*}"
-                new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$name_space_prefix$image_name_tag"
-                echo "docker tag $image $new_image"
-                docker tag $image $new_image
-                echo "docker push $new_image"
-                docker push $new_image
-                echo "开始清理磁盘空间"
-                echo "=============================================================================="
-                df -hT
-                echo "=============================================================================="
-                docker rmi $image
-                docker rmi $new_image
-                echo "磁盘空间清理完毕"
-                echo "=============================================================================="
-                df -hT
-                echo "=============================================================================="  
-            else
-                echo "链接为$RESOURCE_URL"
-                curl -o linux.mp4 "$RESOURCE_URL"
-            fi
+            name_space_prefix=""
+            # 将@sha256:等字符删除
+            image_name_tag="${image_name_tag%%@*}"
+            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$name_space_prefix$image_name_tag"
+            echo "docker tag $image $new_image"
+            docker tag $image $new_image
+            echo "docker push $new_image"
+            docker push $new_image
+            echo "开始清理磁盘空间"
+            echo "=============================================================================="
+            df -hT
+            echo "=============================================================================="
+            docker rmi $image
+            docker rmi $new_image
+            echo "磁盘空间清理完毕"
+            echo "=============================================================================="
+            df -hT
+            echo "=============================================================================="
             
         done < images.txt
+
+    - name: Download others
+      if: ${{env.M3U8 == false }}
+      run: |
+        echo "链接为$RESOURCE_URL"
+        FILE_NAME=$(basename "$RESOURCE_URL")
+        curl -o $FILE_NAME "$RESOURCE_URL"
         
     - name: Release
       if: ${{env.M3U8 == false }}
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          linux.mp4
+          $FILE_NAME
         tag_name: latest
 
