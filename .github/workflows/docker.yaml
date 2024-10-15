@@ -17,6 +17,7 @@ env:
   CGO_ENABLED: 0
   GO111MODULE: on
   M3U8: false
+  RESOURCE_URL: ""
 
 jobs:
 
@@ -67,6 +68,7 @@ jobs:
         while IFS= read -r line || [ -n "$line" ]; do
           echo "判断\"$line\"是不是.m3u8结尾，如果是，设置变量M3U8为true"
           # 判断"$line"是不是.m3u8结尾，如果是，设置变量M3U8为true
+          RESOURCE_URL=$line
           if [[ "$line" == *.m3u8 ]]; then
               M3U8=true
           else
@@ -146,8 +148,8 @@ jobs:
                 echo "docker push $new_image"
                 docker push $new_image
             else
-                echo "链接为$line"
-                curl -o linux.mp4 "$line"
+                echo "链接为$RESOURCE_URL"
+                curl -o linux.mp4 "$RESOURCE_URL"
             fi
             
         done < images.txt
