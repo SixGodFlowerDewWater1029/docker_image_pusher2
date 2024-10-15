@@ -75,6 +75,7 @@ jobs:
           else
               M3U8=false
           fi
+          echo "M3U8=$M3U8"
         done < resources.txt
         
     - name: Set up Go
@@ -166,6 +167,7 @@ jobs:
       run: |
         echo "链接为$RESOURCE_URL"
         FILE_NAME=$(basename "$RESOURCE_URL")
+        echo "文件名为$FILE_NAME"
         curl -o $FILE_NAME "$RESOURCE_URL"
         
     - name: Release
