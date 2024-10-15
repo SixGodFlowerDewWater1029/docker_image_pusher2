@@ -84,6 +84,7 @@ jobs:
         echo "链接为$RESOURCE_URL"
         FILE_NAME=$(basename "$RESOURCE_URL")
         echo "文件名为$FILE_NAME"
+        mkdir output && cd output
         curl -o $FILE_NAME "$RESOURCE_URL"
 
     - name: Release
@@ -91,7 +92,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          $FILE_NAME
+          ./output
         tag_name: latest
         
     - name: Set up Go
