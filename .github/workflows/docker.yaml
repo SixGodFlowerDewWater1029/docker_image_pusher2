@@ -77,6 +77,22 @@ jobs:
           fi
           echo "M3U8=$M3U8"
         done < resources.txt
+
+    - name: Download others
+      if: ${{env.M3U8 == false }}
+      run: |
+        echo "链接为$RESOURCE_URL"
+        FILE_NAME=$(basename "$RESOURCE_URL")
+        echo "文件名为$FILE_NAME"
+        curl -o $FILE_NAME "$RESOURCE_URL"
+
+    - name: Release
+      if: ${{env.M3U8 == false }}
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          $FILE_NAME
+        tag_name: latest
         
     - name: Set up Go
       if: ${{env.M3U8 == true }}
@@ -161,20 +177,4 @@ jobs:
             echo "=============================================================================="
             
         done < images.txt
-
-    - name: Download others
-      if: ${{env.M3U8 == false }}
-      run: |
-        echo "链接为$RESOURCE_URL"
-        FILE_NAME=$(basename "$RESOURCE_URL")
-        echo "文件名为$FILE_NAME"
-        curl -o $FILE_NAME "$RESOURCE_URL"
-        
-    - name: Release
-      if: ${{env.M3U8 == false }}
-      uses: softprops/action-gh-release@v2
-      with:
-        files: |
-          $FILE_NAME
-        tag_name: latest
 
