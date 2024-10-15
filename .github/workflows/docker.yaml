@@ -79,7 +79,7 @@ jobs:
         done < resources.txt
 
     - name: Download others
-      if: ${{env.M3U8 == false }}
+      if: ${{env.M3U8 == 'false' }}
       run: |
         echo "链接为$RESOURCE_URL"
         FILE_NAME=$(basename "$RESOURCE_URL")
@@ -87,7 +87,7 @@ jobs:
         curl -o $FILE_NAME "$RESOURCE_URL"
 
     - name: Release
-      if: ${{env.M3U8 == false }}
+      if: ${{env.M3U8 == 'false' }}
       uses: softprops/action-gh-release@v2
       with:
         files: |
@@ -95,18 +95,18 @@ jobs:
         tag_name: latest
         
     - name: Set up Go
-      if: ${{env.M3U8 == true }}
+      if: ${{env.M3U8 == 'true' }}
       uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
 
     - name: Get dependencies
-      if: ${{env.M3U8 == true }}
+      if: ${{env.M3U8 == 'true' }}
       run: |
         go mod tidy
 
     - name: Build binary
-      if: ${{env.M3U8 == true }}
+      if: ${{env.M3U8 == 'true' }}
       run: |
         go build -o ./m3u8-downloader m3u8-downloader.go
         chmod 0755 m3u8-downloader
@@ -114,7 +114,7 @@ jobs:
         ls -alH
 
     - name: Download m3u8
-      if: ${{env.M3U8 == true }}
+      if: ${{env.M3U8 == 'true' }}
       run: |
         declare -A temp_map
         while IFS= read -r line || [ -n "$line" ]; do
@@ -125,7 +125,7 @@ jobs:
         done < resources.txt
 
     - name: Build and push image Aliyun
-      if: ${{env.M3U8 == true }}
+      if: ${{env.M3U8 == 'true' }}
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         
