@@ -146,6 +146,7 @@ jobs:
                 echo "docker push $new_image"
                 docker push $new_image
             else
+                echo "链接为$line"
                 curl -o linux.mp4 "$line"
             fi
             
