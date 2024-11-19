@@ -22,10 +22,10 @@ jobs:
   build:
     name: Pull
     runs-on: ubuntu-latest
-    env:
-      M3U8: false
-      RESOURCE_URL: ""
-      FILE_NAME: "xx.png"
+#    env:
+#      M3U8: false
+#      RESOURCE_URL: ""
+#      FILE_NAME: "xx.png"
     steps:
     - name: Before freeing up disk space
       run: |
@@ -70,11 +70,12 @@ jobs:
         while IFS= read -r line || [ -n "$line" ]; do
           echo "判断\"$line\"是不是.m3u8结尾，如果是，设置变量M3U8为true"
           # 判断"$line"是不是.m3u8结尾，如果是，设置变量M3U8为true
-          RESOURCE_URL="$line"
+          
+          echo "RESOURCE_URL=$line" >> "$GITHUB_ENV"
           if [[ "$line" == *.m3u8 ]]; then
-              M3U8=true
+              echo "M3U8=true" >> "$GITHUB_ENV"
           else
-              M3U8=false
+              echo "M3U8=false" >> "$GITHUB_ENV"
           fi
           echo "M3U8=$M3U8"
         done < resources.txt
