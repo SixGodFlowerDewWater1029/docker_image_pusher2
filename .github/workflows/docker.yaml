@@ -16,15 +16,16 @@ env:
   GO_VERSION: 1.17
   CGO_ENABLED: 0
   GO111MODULE: on
-  M3U8: false
-  RESOURCE_URL: ""
-  FILE_NAME: "xx.png"
 
 jobs:
 
   build:
     name: Pull
     runs-on: ubuntu-latest
+    env:
+      M3U8: false
+      RESOURCE_URL: ""
+      FILE_NAME: "xx.png"
     steps:
     - name: Before freeing up disk space
       run: |
@@ -69,11 +70,11 @@ jobs:
         while IFS= read -r line || [ -n "$line" ]; do
           echo "判断\"$line\"是不是.m3u8结尾，如果是，设置变量M3U8为true"
           # 判断"$line"是不是.m3u8结尾，如果是，设置变量M3U8为true
-          env.RESOURCE_URL="$line"
+          RESOURCE_URL="$line"
           if [[ "$line" == *.m3u8 ]]; then
-              env.M3U8=true
+              M3U8=true
           else
-              env.M3U8=false
+              M3U8=false
           fi
           echo "M3U8=$M3U8"
         done < resources.txt
