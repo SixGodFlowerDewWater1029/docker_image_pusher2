@@ -17,7 +17,7 @@ env:
   CGO_ENABLED: 0
   GO111MODULE: on
   M3U8: false
-  RESOURCE_URL: "https://coolshell.cn/wp-content/uploads/2023/05/monolith.microservices-768x512.png"
+  RESOURCE_URL: ""
   FILE_NAME: "xx.png"
 
 jobs:
