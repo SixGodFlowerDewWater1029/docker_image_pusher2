@@ -71,18 +71,17 @@ jobs:
           else
               echo "M3U8=false" >> "$GITHUB_ENV"
           fi
-          echo "M3U8=${{ env.M3U8 }}"
-          echo "M3U8=$M3U8"
+          echo "M3U8=${M3U8}"
         done < resources.txt
 
     - name: Download others
       if: ${{env.M3U8 == 'false' }}
       run: |
-        echo "链接为$RESOURCE_URL"
-        FILE_NAME=$(basename "$RESOURCE_URL")
+        echo "链接为${RESOURCE_URL}"
+        FILE_NAME=$(basename "${RESOURCE_URL}")
         echo "文件名为$FILE_NAME"
         mkdir output && cd output
-        curl -o $FILE_NAME "$RESOURCE_URL"
+        curl -o $FILE_NAME "${RESOURCE_URL}"
 
     - name: Release
       if: ${{env.M3U8 == 'false' }}
