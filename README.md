@@ -6,3 +6,4 @@ docker cp nginx:/usr/share/nginx/html/linux.mp4 ~/Downloads/
 docker stop nginx && docker rm nginx
 ```
 
+https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
