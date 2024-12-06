@@ -196,8 +196,8 @@ jobs:
             exit 1
         fi
         cd $LOCAL_DIR
-        if [ -f "Cargo.toml" ]; then
-            echo "This is a Rust project."
+#        if [ -f "Cargo.toml" ]; then
+#            echo "This is a Rust project."
 
             image_name_tag="jetbrains-go:v1.0.0"
             docker build -t $image_name_tag .
@@ -220,7 +220,7 @@ jobs:
                 echo "Failed to build Docker image."
                 exit 1
             fi
-        else
-            echo "This is not a Rust project."
-            exit 1
-        fi
+#        else
+#            echo "This is not a Rust project."
+#            exit 1
+#        fi
