@@ -68,13 +68,15 @@ jobs:
           echo "RESOURCE_URL=$line" >> "$GITHUB_ENV"
           if [[ "$line" == *.m3u8 ]]; then
               echo "M3U8=true" >> "$GITHUB_ENV"
+          elif [[ "$line" == *.git ]]; then
+              echo "git_repo=true" >> "$GITHUB_ENV"
           else
-              echo "M3U8=false" >> "$GITHUB_ENV"
+              echo "simple_file=true" >> "$GITHUB_ENV"
           fi
         done < resources.txt
 
-    - name: Download others
-      if: ${{env.M3U8 == 'false' }}
+    - name: Download simple file
+      if: ${{env.simple_file == 'true' }}
       run: |
         echo "链接为${RESOURCE_URL}"
         FILE_NAME=$(basename "${RESOURCE_URL}")
@@ -82,8 +84,9 @@ jobs:
         mkdir output && cd output
         curl -o $FILE_NAME "${RESOURCE_URL}"
 
-    - name: Release
-      if: ${{env.M3U8 == 'false' }}
+# 单文件下载
+    - name: Release simple file
+      if: ${{env.simple_file == 'true' }}
       uses: softprops/action-gh-release@v2
       with:
         files: |
@@ -101,7 +104,7 @@ jobs:
       run: |
         go mod tidy
 
-    - name: Build binary
+    - name: Build go binary
       if: ${{env.M3U8 == 'true' }}
       run: |
         go build -o ./m3u8-downloader m3u8-downloader.go
@@ -109,6 +112,7 @@ jobs:
         pwd
         ls -alH
 
+# m3u8下载
     - name: Download m3u8
       if: ${{env.M3U8 == 'true' }}
       run: |
@@ -122,6 +126,7 @@ jobs:
           pwd
         done < resources.txt
 
+# 是否推送到阿里云仓库
     - name: Build and push image Aliyun
       if: ${{env.M3U8 == 'true' }}
       run: |
@@ -176,3 +181,11 @@ jobs:
             
         done < images.txt
 
+    - name: Build and push image Aliyun
+      if: ${{env.git_repo == 'true' }}
+      run: |
+        while IFS= read -r line || [ -n "$line" ]; do
+          echo "$line"
+          git clone $line
+          ls -alH
+        done < resources.txt
