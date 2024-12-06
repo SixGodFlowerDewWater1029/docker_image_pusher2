@@ -196,31 +196,24 @@ jobs:
             exit 1
         fi
         cd $LOCAL_DIR
-#        if [ -f "Cargo.toml" ]; then
-#            echo "This is a Rust project."
+        image_name_tag="jetbrains-go:v1.0.0"
+        docker build -t $image_name_tag .
 
-            image_name_tag="jetbrains-go:v1.0.0"
-            docker build -t $image_name_tag .
+        if [ $? -eq 0 ]; then
+            echo "Docker image built successfully."
+
+            docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image_name_tag"
+            docker tag $image_name_tag $new_image
+            docker push $new_image
 
             if [ $? -eq 0 ]; then
-                echo "Docker image built successfully."
-
-                docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
-                new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image_name_tag"
-                docker tag $image_name_tag $new_image
-                docker push $new_image
-
-                if [ $? -eq 0 ]; then
-                    echo "Docker image pushed to Aliyun successfully."
-                else
-                    echo "Failed to push Docker image to Aliyun."
-                    exit 1
-                fi
+                echo "Docker image pushed to Aliyun successfully."
             else
-                echo "Failed to build Docker image."
+                echo "Failed to push Docker image to Aliyun."
                 exit 1
             fi
-#        else
-#            echo "This is not a Rust project."
-#            exit 1
-#        fi
+        else
+            echo "Failed to build Docker image."
+            exit 1
+        fi
