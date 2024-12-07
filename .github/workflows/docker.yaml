@@ -226,11 +226,11 @@ jobs:
         tar -xzf postgresql-16.1.tar.gz
         ls -alH
         cd postgresql-16.1
-        apt update
-        apt install make gcc tar pkg-config libicu-dev libreadline-dev zlib1g-dev
-        ./configure --prefix=/opt/postgresql-16.1
-        make
-        make install
+        sudo apt update
+        sudo apt install make gcc tar pkg-config libicu-dev libreadline-dev zlib1g-dev
+        sudo ./configure --prefix=/opt/postgresql-16.1
+        sudo make
+        sudo make install
         ls -alH /opt/postgresql-16.1
         cd ../
         tar -czvf postgresql-16.1.tar.gz /opt/postgresql-16.1
