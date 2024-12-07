@@ -219,19 +219,17 @@ jobs:
             echo "Failed to build Docker image."
             exit 1
         fi
-    - name: Build and push image Aliyun
+    - name: Compile postgresql-16.1
       if: ${{env.targz_file == 'true' }}
       run: |
         curl https://mirrors.tuna.tsinghua.edu.cn/postgresql/source/v16.1/postgresql-16.1.tar.gz -o postgresql-16.1.tar.gz
         tar -xzf postgresql-16.1.tar.gz
-        ls -alH
         cd postgresql-16.1
         sudo apt update
         sudo apt install make gcc tar pkg-config libicu-dev libreadline-dev zlib1g-dev
         sudo ./configure --prefix=/opt/postgresql-16.1
         sudo make
         sudo make install
-        ls -alH /opt/postgresql-16.1
         cd ../
         tar -czvf postgresql-16.1.tar.gz /opt/postgresql-16.1
     
