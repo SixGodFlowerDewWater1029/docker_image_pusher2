@@ -1,1 +1,1 @@
-git@gitee.com:archknight/ls-license-test.git
+https://mirrors.tuna.tsinghua.edu.cn/postgresql/source/v16.1/postgresql-16.1.tar.gz
