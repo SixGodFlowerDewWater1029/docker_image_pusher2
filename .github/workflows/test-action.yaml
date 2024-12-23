@@ -1,3 +1,4 @@
+name: A Action test
 on: [push]
 
 jobs:
@@ -5,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
+    # https://docs.github.com/zh/actions/sharing-automations/creating-actions/creating-a-docker-container-action
       - name: Hello world action step
         id: hello
         uses: SixGodFlowerDewWater1029/docker_image_pusher2
