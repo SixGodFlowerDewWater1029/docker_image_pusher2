@@ -44,6 +44,7 @@ jobs:
         # ls -alH /opt
         pwd
         echo $GITHUB_WORKSPACE
+        docker
 
     
     - name: Release binary file
