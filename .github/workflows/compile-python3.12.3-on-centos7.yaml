@@ -42,6 +42,7 @@ jobs:
         # tar -czvf /opt/python3.tar.gz /usr/local/python3
         # ls -alH /usr/local/python3
         # ls -alH /opt
+        yum install -y gcc make coreutils
         pwd
         echo $GITHUB_WORKSPACE
         ls -alH $GITHUB_WORKSPACE
