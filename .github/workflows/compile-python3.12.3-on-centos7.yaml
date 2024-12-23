@@ -45,9 +45,6 @@ jobs:
         pwd
         echo $GITHUB_WORKSPACE
         ls -alH $GITHUB_WORKSPACE
-        tar -czvf /opt/python3.tar.gz $GITHUB_WORKSPACE
-        ls -alH
-        pwd
         
     - name: Upload artifact
       uses: actions/upload-artifact@v3
