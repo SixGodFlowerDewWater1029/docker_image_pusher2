@@ -39,13 +39,9 @@ jobs:
         cd /usr/local/python3/Python-3.12.3
         ./configure --prefix=/usr/local/python3 --enable-optimizations
         make && make install
-        ln -s /usr/local/python3/bin/python3 /usr/bin/python3
-        ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3
         tar -czvf /opt/python3.tar.gz /usr/local/python3
         ls -alH /usr/local/python3
         ls -alH /opt
-        python3 -V
-        pip3 -V
 
     
     - name: Release binary file
