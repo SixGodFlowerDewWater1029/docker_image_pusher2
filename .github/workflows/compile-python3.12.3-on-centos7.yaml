@@ -1,0 +1,56 @@
+name: Run Compile Python3.12.3 on CentOS 7
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [ main ]
+
+
+permissions:
+  contents: write
+
+jobs:
+
+  build:
+    name: Run on CentOS 7
+    runs-on: ubuntu-latest
+    container:
+      image: "centos:centos7"
+
+    steps:
+
+    - name: Test
+      run: |
+        cat /etc/os-release
+    
+    - name: Install Python3
+      run: |
+        cd /etc/yum.repos.d
+        cp  CentOS-Base.repo   CentOS-Base.repo.backup
+        curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+        yum clean all
+        yum makecache
+        yum groupinstall -y "Development Tools"
+        yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel
+        yum install -y wget
+        wget https://www.python.org/ftp/python/3.12.3/Python-3.12.3.tgz
+        mkdir -p /usr/local/python3
+        tar -zxvf Python-3.12.3.tgz -C /usr/local/python3
+        cd /usr/local/python3/Python-3.12.3
+        ./configure --prefix=/usr/local/python3 --enable-optimizations
+        make && make install
+        ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+        ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3
+        tar -czvf /opt/python3.tar.gz /usr/local/python3
+        ls -alH /usr/local/python3
+        ls -alH /opt
+        python3 -V
+        pip3 -V
+
+    
+    - name: Release binary file
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          /opt/python3.tar.gz
+        tag_name: v${{ github.run_number }}-python3.12.3
