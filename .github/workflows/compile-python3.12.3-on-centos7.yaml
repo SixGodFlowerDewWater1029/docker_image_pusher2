@@ -15,7 +15,7 @@ jobs:
     name: Run on CentOS 7
     runs-on: ubuntu-latest
     container:
-      image: "centos:centos7"
+      image: "centos/nodejs-12-centos7"
 
     steps:
 
@@ -47,8 +47,8 @@ jobs:
         cd /opt
         touch test.txt
         tar -czvf /opt/python3.tar.gz test.txt
-
-
+        ls -alH
+        pwd
         
     - name: Upload artifact
       uses: actions/upload-artifact@v3
