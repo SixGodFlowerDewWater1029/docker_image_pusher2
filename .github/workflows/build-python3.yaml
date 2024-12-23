@@ -15,8 +15,6 @@ jobs:
       image: "centos:centos7"
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
 
     - name: Test
       run: |
