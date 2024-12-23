@@ -2,8 +2,8 @@ name: Run Compile Python3.12.3 on CentOS 7
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
 
 
 permissions:
@@ -25,11 +25,11 @@ jobs:
     
     - name: Install Python3
       run: |
-        cd /etc/yum.repos.d
-        cp  CentOS-Base.repo   CentOS-Base.repo.backup
-        curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
-        yum clean all
-        yum makecache
+        # cd /etc/yum.repos.d
+        # cp  CentOS-Base.repo   CentOS-Base.repo.backup
+        # curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+        # yum clean all
+        # yum makecache
         # yum groupinstall -y "Development Tools"
         # yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel
         # yum install -y wget
@@ -46,8 +46,8 @@ jobs:
         # pwd
         # echo $GITHUB_WORKSPACE
         # ls -alH $GITHUB_WORKSPACE
-        curl -sL https://rpm.nodesource.com/setup_20.x | bash -
-        yum install -y nodejs
+        # actions/upload-artifact@v3 需要node20，centos7的glibc版本太低，无法安装node20，放弃，还是在高版本的操作系统上折腾，放弃centos7
+
         
     - name: Upload artifact
       uses: actions/upload-artifact@v3
