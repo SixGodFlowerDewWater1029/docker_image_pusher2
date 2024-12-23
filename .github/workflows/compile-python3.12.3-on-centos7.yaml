@@ -15,7 +15,7 @@ jobs:
     name: Run on CentOS 7
     runs-on: ubuntu-latest
     container:
-      image: "centos/nodejs-12-centos7"
+      image: "centos:centos7"
 
     steps:
 
@@ -42,7 +42,7 @@ jobs:
         # tar -czvf /opt/python3.tar.gz /usr/local/python3
         # ls -alH /usr/local/python3
         # ls -alH /opt
-        sudo yum install -y gcc make coreutils
+        yum install -y gcc make coreutils
         pwd
         echo $GITHUB_WORKSPACE
         ls -alH $GITHUB_WORKSPACE
