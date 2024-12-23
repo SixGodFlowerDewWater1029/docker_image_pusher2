@@ -23,13 +23,18 @@ jobs:
       run: |
         cat /etc/os-release
     
+    - name: Install Node.js 14.x
+      run: |
+        curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+        yum install -y nodejs
+
     - name: Install Python3
       run: |
-        cd /etc/yum.repos.d
-        cp  CentOS-Base.repo   CentOS-Base.repo.backup
-        curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
-        yum clean all
-        yum makecache
+        # cd /etc/yum.repos.d
+        # cp  CentOS-Base.repo   CentOS-Base.repo.backup
+        # curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+        # yum clean all
+        # yum makecache
         # yum groupinstall -y "Development Tools"
         # yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel
         # yum install -y wget
@@ -42,10 +47,10 @@ jobs:
         # tar -czvf /opt/python3.tar.gz /usr/local/python3
         # ls -alH /usr/local/python3
         # ls -alH /opt
-        yum install -y gcc make coreutils
-        pwd
-        echo $GITHUB_WORKSPACE
-        ls -alH $GITHUB_WORKSPACE
+        # yum install -y gcc make coreutils
+        # pwd
+        # echo $GITHUB_WORKSPACE
+        # ls -alH $GITHUB_WORKSPACE
         
     - name: Upload artifact
       uses: actions/upload-artifact@v3
