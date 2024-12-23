@@ -1,0 +1,29 @@
+name: Run on CentOS 7
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [ main ]
+
+
+permissions:
+  contents: write
+
+jobs:
+
+  build:
+    name: Run on CentOS 7
+    runs-on: ubuntu-latest
+    container:
+      image: "centos:centos7"
+
+    steps:
+
+    - name: Test
+      run: |
+        cat /etc/os-release
+        cd /etc/yum.repos.d
+        cp  CentOS-Base.repo   CentOS-Base.repo.backup
+        curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+        yum clean all
+        yum makecache
