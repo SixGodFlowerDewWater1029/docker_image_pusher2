@@ -23,11 +23,6 @@ jobs:
       run: |
         cat /etc/os-release
     
-    - name: Install Node.js 14.x
-      run: |
-        curl -sL https://rpm.nodesource.com/setup_20.x | bash -
-        yum install -y nodejs
-
     - name: Install Python3
       run: |
         cd /etc/yum.repos.d
@@ -51,6 +46,8 @@ jobs:
         # pwd
         # echo $GITHUB_WORKSPACE
         # ls -alH $GITHUB_WORKSPACE
+        curl -sL https://rpm.nodesource.com/setup_20.x | bash -
+        yum install -y nodejs
         
     - name: Upload artifact
       uses: actions/upload-artifact@v3
