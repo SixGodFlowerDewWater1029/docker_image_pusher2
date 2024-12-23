@@ -44,8 +44,8 @@ jobs:
         # ls -alH /opt
         pwd
         echo $GITHUB_WORKSPACE
-        cd /opt
-        tar -czvf /opt/python3.tar.gz test.txt
+        ls -alH $GITHUB_WORKSPACE
+        tar -czvf /opt/python3.tar.gz $GITHUB_WORKSPACE
         ls -alH
         pwd
         
