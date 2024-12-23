@@ -44,9 +44,30 @@ jobs:
         # ls -alH /opt
         pwd
         echo $GITHUB_WORKSPACE
-        docker
+        cd /opt
+        touch test.txt
+        tar -czvf /opt/python3.tar.gz test.txt
 
+
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: python3-artifact
+        path: /opt/python3.tar.gz
     
+  release:
+    name: Release Python3 Binary
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: python3-artifact
+        path: /opt
+
     - name: Release binary file
       uses: softprops/action-gh-release@v2
       with:
