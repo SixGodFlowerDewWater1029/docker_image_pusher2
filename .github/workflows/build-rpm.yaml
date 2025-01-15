@@ -12,9 +12,10 @@ permissions:
 jobs:
 
   build:
-    name: Run on CentOS 7
+    name: Build RPM
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: check
       run: |
         ls -alH
