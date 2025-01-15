@@ -1,0 +1,36 @@
+name: Build RPM
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+
+permissions:
+  contents: write
+
+jobs:
+
+  build:
+    name: Run on CentOS 7
+    runs-on: ubuntu-latest
+    steps:
+    - uses: Antikythera/build-rpm@v1
+      id: build_rpm
+      with:
+        spec_file: rpm_assets/openssh-9.9p1.spec
+        sources: |
+          rpm_assets/openssh-9.9p1.tar.gz
+        variables: |
+          _version=9.9p1
+          _foo=bar
+
+    - name: Upload RPM
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        upload_url: my_app.rpm
+        asset_path: ${{ steps.build_rpm.outputs.rpm_package_path }}
+        asset_name: ${{ steps.build_rpm.outputs.rpm_package_name }}
+        asset_content_type: application/octet-stream
