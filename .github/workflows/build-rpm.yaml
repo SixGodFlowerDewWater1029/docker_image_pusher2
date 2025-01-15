@@ -15,6 +15,10 @@ jobs:
     name: Run on CentOS 7
     runs-on: ubuntu-latest
     steps:
+    - name: check
+      run: |
+        ls -alH
+        pwd
     - uses: Antikythera/build-rpm@v1
       id: build_rpm
       with:
