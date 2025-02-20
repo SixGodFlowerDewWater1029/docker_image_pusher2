@@ -71,6 +71,7 @@ jobs:
           else
               echo "build_image=false" >> "$GITHUB_ENV"
           fi
+          break
         done < resources.txt
 
 # 是否推送到阿里云仓库
