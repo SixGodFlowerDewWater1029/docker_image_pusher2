@@ -1,1 +1,25 @@
-https://surrit.com/24cd2908-b76c-471e-8569-d4e348da5e6d/640x360/video.m3u8
+FROM bitnami/minideb:latest
+
+RUN install_packages \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg2 \
+    software-properties-common
+
+RUN curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
+RUN echo "deb https://nginx.org/packages/mainline/debian/ $(grep -oP '(?<=VERSION_CODENAME=).+' /etc/os-release) nginx" \
+    | tee /etc/apt/sources.list.d/nginx.list
+
+RUN install_packages openssh-server nginx
+
+RUN mkdir -p /var/run/sshd
+RUN ssh-keygen -A
+
+RUN echo 'root:password' | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+EXPOSE 22 80
+
+CMD ["/usr/sbin/sshd", "-D"] & nginx -g "daemon off;"
