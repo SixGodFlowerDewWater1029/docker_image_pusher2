@@ -1,1 +1,15 @@
-https://surrit.com/f176f9e7-7024-4704-9896-3c412d80610f/360p/video.m3u8
+FROM eclipse-temurin:17.0.13_11-jdk
+
+# 安装 openssh-server 并启动 sshd 服务
+RUN apt-get update && \
+    apt-get install -y openssh-server iproute2 && \
+    mkdir /var/run/sshd && \
+    echo 'root:!#D4WGdmVorxgJ' | chpasswd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# 暴露 SSH 端口
+EXPOSE 22
+
+# 启动 SSHD 服务
+CMD ["/usr/sbin/sshd", "-D"]

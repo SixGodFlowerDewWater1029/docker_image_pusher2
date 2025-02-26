@@ -79,7 +79,7 @@ jobs:
       if: ${{env.build_image == 'true' }}
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
-        image=minideb:v0.0.1
+        image=eclipse-temurin:17.0.13_11-jdk-ssh
         mv resources.txt Dockerfile
         cat Dockerfile
         docker build -t $image .
