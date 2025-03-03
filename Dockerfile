@@ -1,5 +1,10 @@
 FROM eclipse-temurin:17.0.13_11-jdk
 
+# 设置全局环境变量
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH=${JAVA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib
+
 # 复制所需文件
 COPY arthas-4.0.4.deb /tmp/
 COPY lsmod_install.tar.gz postgresql-16.1.tar.gz /opt/
@@ -51,7 +56,9 @@ RUN set -ex \
     # 配置环境变量
     && echo 'export JAVA_HOME=/opt/java/openjdk' >> /etc/profile \
     && echo 'export PATH=${JAVA_HOME}/bin:${PATH}' >> /etc/profile \
-    && echo 'export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib' >> /etc/profile
+    && echo 'export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib' >> /etc/profile \
+    # 验证环境变量是否写入成功
+    && cat /etc/profile | grep JAVA_HOME
 
 # 创建启动脚本
 RUN echo '#!/bin/bash
