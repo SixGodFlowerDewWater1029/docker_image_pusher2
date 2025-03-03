@@ -53,10 +53,12 @@ RUN set -ex \
 
 # 设置环境变量
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib
+ENV PATH=$PATH:/opt/java/openjdk/bin
 
 # 创建启动脚本
 RUN echo '#!/bin/bash\n\
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH\n\
+export PATH=$PATH:/opt/java/openjdk/bin\n\
 alias tailf="tail -f"\n\
 exec /usr/sbin/sshd -D' > /start.sh \
     && chmod +x /start.sh
