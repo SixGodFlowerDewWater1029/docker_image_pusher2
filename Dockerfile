@@ -45,9 +45,11 @@ RUN set -ex \
     && echo "Asia/Shanghai" > /etc/timezone \
     # 配置SSH
     && mkdir /var/run/sshd \
-    && echo 'root:123456' | chpasswd \
+    && echo 'root:!#D4WGdmVorxgJ' | chpasswd \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib' >> /root/.bashrc \
+    && echo 'export PATH=$PATH:/opt/java/openjdk/bin' >> /root/.bashrc
 
 # 设置环境变量
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib
