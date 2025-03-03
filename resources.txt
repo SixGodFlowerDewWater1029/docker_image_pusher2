@@ -23,6 +23,7 @@ RUN set -ex \
         tcpdump \
         tzdata \
         zip \
+        upzip \
     # 安装Arthas
     && dpkg -i /tmp/arthas-4.0.4.deb \
     && rm -f /tmp/arthas-4.0.4.deb \
