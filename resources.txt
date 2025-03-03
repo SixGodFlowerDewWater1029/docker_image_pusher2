@@ -1,6 +1,8 @@
 FROM eclipse-temurin:17.0.13_11-jdk
 
-ENV PATH="/opt/java/openjdk/bin:${PATH}"
+# 设置Java环境变量
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # 复制所需文件
 COPY arthas-4.0.4.deb /tmp/
@@ -56,9 +58,13 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib
 
 # 创建启动脚本
 RUN echo '#!/bin/bash\n\
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH\n\
-export PATH=$PATH:/opt/java/openjdk/bin\n\
+set -e\n\
+# 确保环境变量正确设置\n\
+export JAVA_HOME=/opt/java/openjdk\n\
+export PATH=${JAVA_HOME}/bin:${PATH}\n\
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}\n\
 alias tailf="tail -f"\n\
+# 启动SSH服务\n\
 exec /usr/sbin/sshd -D' > /start.sh \
     && chmod +x /start.sh
 
