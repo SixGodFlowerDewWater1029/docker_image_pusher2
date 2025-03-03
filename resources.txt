@@ -51,6 +51,7 @@ RUN set -ex \
 
 # 设置环境变量
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib
+ENV PATH=$PATH:/opt/java/openjdk/bin
 
 # 创建启动脚本
 RUN echo '#!/bin/bash\n\
