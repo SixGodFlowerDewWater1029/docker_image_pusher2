@@ -32,10 +32,11 @@ RUN set -ex \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 设置环境变量
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV PATH=${JAVA_HOME}/bin:${PATH}
-ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib
+# 设置系统级环境变量
+RUN echo 'export JAVA_HOME=/opt/java/openjdk' >> /etc/profile && \
+    echo 'export PATH=${JAVA_HOME}/bin:${PATH}' >> /etc/profile && \
+    echo 'export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib' >> /etc/profile && \
+    echo 'source /etc/profile' >> /etc/bash.bashrc
 
 # 创建启动脚本
 RUN echo '#!/bin/bash
@@ -47,8 +48,14 @@ if [ ! -d "/var/run/sshd" ]; then
     chmod 0755 /var/run/sshd
 fi
 
-# 启动SSH服务
-exec /usr/sbin/sshd -D' > /start.sh \
+# 加载环境变量
+source /etc/profile
+
+# 启动SSH服务（后台运行）
+/usr/sbin/sshd
+
+# 保持容器运行
+tail -f /dev/null' > /start.sh \
     && chmod +x /start.sh
 
 # 暴露SSH端口
