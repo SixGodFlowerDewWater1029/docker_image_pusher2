@@ -1,9 +1,5 @@
 FROM eclipse-temurin:17.0.13_11-jdk
 
-# 设置Java环境变量
-ENV JAVA_HOME=/opt/java/openjdk
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
 # 复制所需文件
 COPY arthas-4.0.4.deb /tmp/
 COPY lsmod_install.tar.gz postgresql-16.1.tar.gz /opt/
@@ -51,42 +47,24 @@ RUN set -ex \
     && mkdir /var/run/sshd \
     && echo 'root:!#D4WGdmVorxgJ' | chpasswd \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-
-# 设置环境变量
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib64:/opt/pgsql/lib
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    # 配置环境变量
+    && echo 'export JAVA_HOME=/opt/java/openjdk' >> /etc/profile \
+    && echo 'export PATH=${JAVA_HOME}/bin:${PATH}' >> /etc/profile \
+    && echo 'export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib64:/opt/pgsql/lib' >> /etc/profile
 
 # 创建启动脚本
 RUN echo '#!/bin/bash
-
 set -e
-
-# 确保环境变量正确设置
-
-export JAVA_HOME=/opt/java/openjdk
-
-export PATH=${JAVA_HOME}/bin:${PATH}
-
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
-
+# 加载系统环境变量
+source /etc/profile
 alias tailf="tail -f"
-
-
-
 # 启动SSH服务
-
 echo "Starting SSH service..."
-
 /usr/sbin/sshd
-
 echo "SSH service started"
-
-
-
 # 使用tail -f /dev/null保持容器运行
-
 echo "Container is running, use docker exec to interact with it"
-
 tail -f /dev/null' > /start.sh \
     && chmod +x /start.sh
 
