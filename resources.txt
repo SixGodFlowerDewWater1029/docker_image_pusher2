@@ -39,7 +39,6 @@ RUN set -ex \
     # 创建符号链接
     && ln -s /usr/bin/busybox /usr/bin/vi \
     && ln -s /usr/bin/busybox /usr/bin/less \
-    && ln -s /usr/bin/busybox /usr/bin/ip \
     && ln -s /usr/bin/busybox /usr/bin/ifconfig \
     # 设置时区
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
